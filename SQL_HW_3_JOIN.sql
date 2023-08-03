@@ -1,4 +1,5 @@
- --1. Вывести всех работников чьи зарплаты есть в базе, вместе с зарплатами.
+ --1. Вывести всех работников чьи зарплаты есть в базе, 
+ --вместе с зарплатами.
  
  select employee_name, monthly_salary
  from employee_salary
@@ -13,7 +14,9 @@
  join salary on employee_salary.salary_id = salary.id
  where monthly_salary < 2000;
  
- --3. Вывести все зарплатные позиции, но работник по ним не назначен. (ЗП есть, но не понятно кто её получает.)
+ --3. Вывести все зарплатные позиции, 
+ --но работник по ним не назначен. 
+ --(ЗП есть, но не понятно кто её получает.)
  select employee_name, monthly_salary
  from 
  employee_salary left join employees 
@@ -22,7 +25,9 @@
  on employee_salary.salary_id = salary.id
  where employee_name is null;
 
- --4. Вывести все зарплатные позиции  меньше 2000 но работник по ним не назначен. (ЗП есть, но не понятно кто её получает.)
+ --4. Вывести все зарплатные позиции  меньше 2000 
+ --но работник по ним не назначен. 
+ --(ЗП есть, но не понятно кто её получает.)
  select employee_name, monthly_salary
  from employee_salary
  left join employees on employee_salary.employee_id = employees.id
@@ -41,15 +46,15 @@ select employee_name, role_name
 from 
 employees left join roles_employee 
 on employees.id = roles_employee.employee_id
-left join roles on role_id = roles.id;
+left join roles on roles_employee.role_id = roles.id;
  
  --7. Вывести имена и должность только Java разработчиков.
 select employee_name, role_name
 from
 employees left join roles_employee
 on employees.id = roles_employee.employee_id 
-left join roles 
-on role_id = roles.id 
+		  left join roles 
+on roles_employee.role_id = roles.id 
 where role_name ilike '%Java developer%';
 
  --8. Вывести имена и должность только Python разработчиков.
@@ -57,8 +62,8 @@ select employee_name, role_name
 from
 employees left join roles_employee
 on employees.id = roles_employee.employee_id 
-left join roles 
-on role_id = roles.id 
+          left join roles 
+on roles_employee.role_id = roles.id 
 where role_name ilike '%Python developer%';
 
  --9. Вывести имена и должность всех QA инженеров.
@@ -66,8 +71,8 @@ select employee_name, role_name
 from
 employees left join roles_employee
 on employees.id = roles_employee.employee_id 
-left join roles 
-on role_id = roles.id 
+          left join roles 
+on roles_employee.role_id = roles.id 
 where role_name ilike '%QA%';
 
  --10. Вывести имена и должность ручных QA инженеров.
@@ -75,8 +80,8 @@ select employee_name, role_name
 from
 employees left join roles_employee
 on employees.id = roles_employee.employee_id 
-left join roles 
-on role_id = roles.id 
+          left join roles 
+on roles_employee.role_id = roles.id 
 where role_name ilike '%Manual QA%';
 
  --11. Вывести имена и должность автоматизаторов QA
@@ -84,8 +89,8 @@ select employee_name, role_name
 from
 employees left join roles_employee
 on employees.id = roles_employee.employee_id 
-left join roles 
-on role_id = roles.id 
+          left join roles 
+on roles_employee.role_id = roles.id 
 where role_name ilike '%Automation QA%';
 
  --12. Вывести имена и зарплаты Junior специалистов
@@ -93,7 +98,7 @@ select employee_name, monthly_salary
 from roles_employee 
 join employee_salary on roles_employee.employee_id  = employee_salary.employee_id 
 join employees on roles_employee.employee_id = employees.id 
-join roles on role_id = roles.id 
+join roles on roles_employee.role_id = roles.id 
 join salary on salary_id = salary.id 
 where role_name ilike '%Junior%';
 
@@ -207,10 +212,8 @@ join salary on salary_id = salary.id
 where role_name ilike '%QA%';
 
 -- 25. Вывести количество QA инженеров
-
 select count(*) as "Количество QA инженеров"
-from salary
-join employee_salary on salary.id = employee_salary.salary_id
+from employee_salary
 join roles_employee on employee_salary.employee_id = roles_employee.employee_id
 join roles on roles_employee.role_id = roles.id
 where role_name like '%QA%';
@@ -218,8 +221,7 @@ where role_name like '%QA%';
 -- 26. Вывести количество Middle специалистов.
 
 select count(*) as "Количество Middle специалистов"
-from salary
-join employee_salary on salary.id = employee_salary.salary_id
+from employee_salary
 join roles_employee on employee_salary.employee_id = roles_employee.employee_id
 join roles on roles_employee.role_id = roles.id
 where role_name like '%Middle%';
@@ -227,8 +229,7 @@ where role_name like '%Middle%';
 -- 27. Вывести количество разработчиков
 
 select count(*) as "Количество разработчиков"
-from salary
-join employee_salary on salary.id = employee_salary.salary_id
+from employee_salary
 join roles_employee on employee_salary.employee_id = roles_employee.employee_id
 join roles on roles_employee.role_id = roles.id
 where role_name like '%developer%';
@@ -252,7 +253,8 @@ join roles on role_id = roles.id
 join salary on salary_id = salary.id 
 order by monthly_salary;
 
--- 30. Вывести имена, должности и ЗП всех специалистов по возрастанию у специалистов у которых ЗП от 1700 до 2300
+-- 30. Вывести имена, должности и ЗП всех специалистов по возрастанию 
+--у специалистов у которых ЗП от 1700 до 2300
 select employee_name,role_name, monthly_salary
 from roles_employee 
 join employee_salary on roles_employee.employee_id  = employee_salary.employee_id 
